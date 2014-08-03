@@ -17,8 +17,8 @@ import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.example.games.basegameutils.GameHelper;
 import com.google.example.games.basegameutils.GameHelper.GameHelperListener;
-import com.kilobolt.ZombieBird.ActionResolver;
-import com.kilobolt.ZombieBird.ZBGame;
+import com.kritikalerror.FlappyCanary.ActionResolver;
+import com.kritikalerror.FlappyCanary.ZBGame;
 import com.kritikalerror.FlappyCanary.R;
 import com.google.android.gms.games.Games;
 
@@ -122,7 +122,6 @@ public class MainActivity extends AndroidApplication implements GameHelperListen
 		{
 			runOnUiThread(new Runnable()
 			{
-				//@Override
 				public void run()
 				{
 					gameHelper.beginUserInitiatedSignIn();
@@ -144,7 +143,6 @@ public class MainActivity extends AndroidApplication implements GameHelperListen
 		{
 			runOnUiThread(new Runnable()
 			{
-				//@Override
 				public void run()
 				{
 					gameHelper.signOut();
@@ -161,8 +159,7 @@ public class MainActivity extends AndroidApplication implements GameHelperListen
 	@Override
 	public void rateGame() {
 		// TODO Auto-generated method stub
-		//String str ="https://play.google.com/store/apps/details?id=org.fortheloss.plunderperil";
-		String str ="https://play.google.com/";
+		String str ="https://play.google.com/store/apps/details?id=com.kritikalerror.flappycanary";
 		startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(str)));
 	}
 
@@ -176,7 +173,7 @@ public class MainActivity extends AndroidApplication implements GameHelperListen
 		}
 		else
 		{
-			// Maybe sign in here then redirect to submitting score?
+			signIn();
 		}
 	}
 
@@ -184,11 +181,13 @@ public class MainActivity extends AndroidApplication implements GameHelperListen
 	@Override
 	public void showScores() {
 		// TODO Auto-generated method stub
-		if (isSignedIn() == true)
+		if (isSignedIn() == true) 
+		{
 			startActivityForResult(Games.Leaderboards.getLeaderboardIntent(gameHelper.getApiClient(), getString(R.string.leaderboard_id)), REQUEST_CODE_UNUSED);
+		}
 		else
 		{
-			// Maybe sign in here then redirect to showing scores?
+			signIn();
 		}
 	}
 
@@ -202,30 +201,45 @@ public class MainActivity extends AndroidApplication implements GameHelperListen
 	@Override
 	public void onSignInFailed() {
 		// TODO Auto-generated method stub
-
+		Log.e(TAG, "Sign in failed!");
 	}
 
 
 	@Override
 	public void onSignInSucceeded() {
 		// TODO Auto-generated method stub
-
+		Log.d(TAG, "Sign in successful!");
 	}
 
 	@Override
 	public void unlockAchievements(String achievementId) {
 		// TODO Auto-generated method stub
-		Games.Achievements.unlock(gameHelper.getApiClient(), achievementId);
+		if (isSignedIn() == true) 
+		{
+			Games.Achievements.unlock(gameHelper.getApiClient(), achievementId);
+		}
+		else
+		{
+			signIn();
+		}
 	}
 
 	@Override
 	public void getAchievements() {
 		// TODO Auto-generated method stub
-		Games.Achievements.getAchievementsIntent(gameHelper.getApiClient());
+		if (isSignedIn() == true) 
+		{
+			startActivityForResult(Games.Achievements.getAchievementsIntent(gameHelper.getApiClient()), REQUEST_CODE_UNUSED);
+		}
+		else
+		{
+			signIn();
+		}
 	}
 	
 	@Override
-	public void generateToast() {
+	public void generateToast(String type) {
+		final String insert = type;
 		try
 		{
 			runOnUiThread(new Runnable()
@@ -235,7 +249,7 @@ public class MainActivity extends AndroidApplication implements GameHelperListen
 				{
 					Toast.makeText(getApplicationContext(), "Signing into Google Play...",
 							   Toast.LENGTH_SHORT).show();
-					Toast.makeText(getApplicationContext(), "Tap the icon again to see the leaderboards.",
+					Toast.makeText(getApplicationContext(), "Tap the icon again to see the " + insert + ".",
 							   Toast.LENGTH_SHORT).show();
 				}
 			});
