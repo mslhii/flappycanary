@@ -9,5 +9,3 @@ This app is based on a tutorial from Kilobolt Studios, which you can find here: 
 It was really helpful going through it as a first time game developer. I never knew this much code went into one game, even with the libgdx engine supporting it :)
 
 Flappy Canary 1.0 is just the game complete with achievements and leaderboards.
-
-Flappy Canary 1.1 is on hold for now while I complete other projects. Should be bugfixes for the most part and maybe a new feature?
