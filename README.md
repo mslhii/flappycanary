@@ -7,4 +7,4 @@ You can find Flappy Canary here: https://play.google.com/store/apps/details?id=c
 
 This app is based on a tutorial from Kilobolt Studios, which you can find here: http://www.kilobolt.com/zombie-bird-tutorial-flappy-bird-remake.html
 
-Flappy Canary 1.0 is just the game complete with achievements and leaderboards.
+Flappy Canary 1.0 is just the game complete with achievements and leaderboards. No more improvements will be made
